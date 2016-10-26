@@ -196,7 +196,7 @@ EXPORT int VeGetDramType(void) {
 #elif CONFIG_DRAM_INTERFACE == OPTION_DRAM_INTERFACE_DDR3_64BITS
 	return DDRTYPE_DDR3_64BITS;
 #else
-#error "invalid ddr type configuration."
+#error "invalid dram type."
 #endif
 }
 

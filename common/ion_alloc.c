@@ -1,6 +1,6 @@
 #include "config.h"
 
-#if ((CONFIG_MEMORY_DRIVER == OPTION_MEMORY_DRIVER_ION) || (CONFIG_MEMORY_DRIVER == OPTION_MEMORY_DRIVER_ION_LINUX_3_10))
+#if (CONFIG_MEMORY_DRIVER == OPTION_MEMORY_DRIVER_ION)
 
 #include <pthread.h>
 #include <stdio.h>
