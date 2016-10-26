@@ -16,6 +16,7 @@
 
 #include "ion.h"
 #include "list.h"
+#include "export.h"
 
 #define PAGE_SIZE		4096
 #define MEM_OFFSET		0x40000000UL
@@ -249,12 +250,12 @@ void ion_flush_cache(void *startAddr, int size) {
 	ioctl(ion_fd, ION_IOC_CUSTOM, &cache);
 }
 
-int MemAdapterOpen(void) __attribute__ ((alias ("ion_alloc_open")));
-void MemAdapterClose(void) __attribute__ ((alias ("ion_alloc_close")));
-void *MemAdapterPalloc(int nSize) __attribute__ ((alias ("ion_alloc_alloc")));
-void MemAdapterPfree(void *pMem) __attribute__ ((alias ("ion_alloc_free")));
-void *MemAdapterGetPhysicAddress(void *pVirtualAddress) __attribute__ ((alias ("ion_alloc_vir2phy")));
-void *MemAdapterGetVirtualAddress(void *pPhysicAddress) __attribute__ ((alias ("ion_alloc_phy2vir")));
-void MemAdapterFlushCache(void *pMem, int nSize) __attribute__ ((alias ("ion_flush_cache")));
+EXPORT int MemAdapterOpen(void) __attribute__ ((alias ("ion_alloc_open")));
+EXPORT void MemAdapterClose(void) __attribute__ ((alias ("ion_alloc_close")));
+EXPORT void *MemAdapterPalloc(int nSize) __attribute__ ((alias ("ion_alloc_alloc")));
+EXPORT void MemAdapterPfree(void *pMem) __attribute__ ((alias ("ion_alloc_free")));
+EXPORT void *MemAdapterGetPhysicAddress(void *pVirtualAddress) __attribute__ ((alias ("ion_alloc_vir2phy")));
+EXPORT void *MemAdapterGetVirtualAddress(void *pPhysicAddress) __attribute__ ((alias ("ion_alloc_phy2vir")));
+EXPORT void MemAdapterFlushCache(void *pMem, int nSize) __attribute__ ((alias ("ion_flush_cache")));
 
 #endif

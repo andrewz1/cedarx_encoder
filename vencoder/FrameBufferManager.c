@@ -18,6 +18,7 @@
 
 #include "FrameBufferManager.h"
 #include "EncAdapter.h"
+#include "export.h"
 
 static void enqueue(VencInputBufferInfo** pp_head, VencInputBufferInfo* p) {
 	VencInputBufferInfo *cur;
@@ -46,7 +47,7 @@ static VencInputBufferInfo *dequeue(VencInputBufferInfo **pp_head) {
 		return NULL;
 }
 
-FrameBufferManager *FrameBufferManagerCreate(int num) {
+EXPORT FrameBufferManager *FrameBufferManagerCreate(int num) {
 	FrameBufferManager *context;
 	int i;
 
@@ -68,7 +69,7 @@ FrameBufferManager *FrameBufferManagerCreate(int num) {
 	return context;
 }
 
-void FrameBufferManagerDestroy(FrameBufferManager* fbm) {
+EXPORT void FrameBufferManagerDestroy(FrameBufferManager* fbm) {
 	int i;
 
 	if (!fbm)
@@ -92,7 +93,7 @@ void FrameBufferManagerDestroy(FrameBufferManager* fbm) {
 	free(fbm);
 }
 
-int AddInputBuffer(FrameBufferManager* fbm, VencInputBuffer *inputbuffer) {
+EXPORT int AddInputBuffer(FrameBufferManager* fbm, VencInputBuffer *inputbuffer) {
 	VencInputBufferInfo *input_buffer_info;
 
 	if (!fbm || !inputbuffer)
@@ -109,7 +110,7 @@ int AddInputBuffer(FrameBufferManager* fbm, VencInputBuffer *inputbuffer) {
 	return 0;
 }
 
-int GetInputBuffer(FrameBufferManager* fbm, VencInputBuffer *inputbuffer) {
+EXPORT int GetInputBuffer(FrameBufferManager* fbm, VencInputBuffer *inputbuffer) {
 	VencInputBufferInfo *input_buffer_info;
 
 	if (!fbm || !inputbuffer)
@@ -123,7 +124,7 @@ int GetInputBuffer(FrameBufferManager* fbm, VencInputBuffer *inputbuffer) {
 	return 0;
 }
 
-int AddUsedInputBuffer(FrameBufferManager* fbm, VencInputBuffer *inputbuffer) {
+EXPORT int AddUsedInputBuffer(FrameBufferManager* fbm, VencInputBuffer *inputbuffer) {
 	VencInputBufferInfo *input_buffer_info;
 
 	if (!fbm || !inputbuffer)
@@ -143,7 +144,7 @@ int AddUsedInputBuffer(FrameBufferManager* fbm, VencInputBuffer *inputbuffer) {
 	return 0;
 }
 
-int GetUsedInputBuffer(FrameBufferManager* fbm, VencInputBuffer *inputbuffer) {
+EXPORT int GetUsedInputBuffer(FrameBufferManager* fbm, VencInputBuffer *inputbuffer) {
 	VencInputBufferInfo *input_buffer_info;
 
 	if (!fbm || !inputbuffer)
@@ -160,7 +161,7 @@ int GetUsedInputBuffer(FrameBufferManager* fbm, VencInputBuffer *inputbuffer) {
 	return 0;
 }
 
-int AllocateInputBuffer(FrameBufferManager* fbm, VencAllocateBufferParam *buffer_param) {
+EXPORT int AllocateInputBuffer(FrameBufferManager* fbm, VencAllocateBufferParam *buffer_param) {
 	int i;
 
 	if (!fbm || !buffer_param)
@@ -204,7 +205,7 @@ int AllocateInputBuffer(FrameBufferManager* fbm, VencAllocateBufferParam *buffer
 	return 0;
 }
 
-int GetOneAllocateInputBuffer(FrameBufferManager *fbm, VencInputBuffer *inputbuffer) {
+EXPORT int GetOneAllocateInputBuffer(FrameBufferManager *fbm, VencInputBuffer *inputbuffer) {
 	VencInputBufferInfo *input_buffer_info;
 
 	if (!fbm || !inputbuffer)
@@ -220,7 +221,7 @@ int GetOneAllocateInputBuffer(FrameBufferManager *fbm, VencInputBuffer *inputbuf
 	return 0;
 }
 
-int FlushCacheAllocateInputBuffer(FrameBufferManager *fbm, VencInputBuffer *inputbuffer) {
+EXPORT int FlushCacheAllocateInputBuffer(FrameBufferManager *fbm, VencInputBuffer *inputbuffer) {
 	if (!fbm || !inputbuffer)
 		return -1;
 	EncAdapterMemFlushCache(inputbuffer->pAddrVirY, fbm->size_y);
@@ -229,7 +230,7 @@ int FlushCacheAllocateInputBuffer(FrameBufferManager *fbm, VencInputBuffer *inpu
 	return 0;
 }
 
-int ReturnOneAllocateInputBuffer(FrameBufferManager *fbm, VencInputBuffer *inputbuffer) {
+EXPORT int ReturnOneAllocateInputBuffer(FrameBufferManager *fbm, VencInputBuffer *inputbuffer) {
 	VencInputBufferInfo *input_buffer_info;
 
 	if (!fbm || !inputbuffer)

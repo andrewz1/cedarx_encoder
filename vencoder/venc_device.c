@@ -23,6 +23,7 @@
 
 #include "venc_device.h"
 #include "list.h"
+#include "export.h"
 
 struct VEncoderNodeS {
 	struct list_head lst;
@@ -34,7 +35,7 @@ struct VEncoderNodeS {
 static LIST_HEAD(dev_lst);
 static pthread_mutex_t dev_mx = PTHREAD_MUTEX_INITIALIZER;
 
-int VEncoderRegister(VENC_CODEC_TYPE type, char *desc, VENC_DEVICE *device) {
+EXPORT int VEncoderRegister(VENC_CODEC_TYPE type, char *desc, VENC_DEVICE *device) {
 	struct VEncoderNodeS *d;
 
 	if (!device)
@@ -62,7 +63,7 @@ int VEncoderRegister(VENC_CODEC_TYPE type, char *desc, VENC_DEVICE *device) {
 	return 0;
 }
 
-VENC_DEVICE *VencoderDeviceCreate(VENC_CODEC_TYPE type) {
+EXPORT VENC_DEVICE *VencoderDeviceCreate(VENC_CODEC_TYPE type) {
 	VENC_DEVICE *vencoder_device_handle = NULL;
 	struct VEncoderNodeS *d;
 
@@ -76,7 +77,7 @@ VENC_DEVICE *VencoderDeviceCreate(VENC_CODEC_TYPE type) {
 	return vencoder_device_handle;
 }
 
-void VencoderDeviceDestroy(void *handle) {
+EXPORT void VencoderDeviceDestroy(void *handle) {
 /* empty */
 	return;
 }

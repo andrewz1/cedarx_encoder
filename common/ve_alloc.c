@@ -34,6 +34,7 @@
 
 #include "cedardev_api.h"
 #include "list.h"
+#include "export.h"
 
 #define PAGE_SIZE		4096
 #define PAGE_OFFSET		0xc0000000UL
@@ -266,12 +267,12 @@ void ve_flush_cache(void *startAddr, int size) {
 	ioctl(ve_fd, IOCTL_FLUSH_CACHE, &range);
 }
 
-int MemAdapterOpen(void) __attribute__ ((alias ("ve_alloc_open")));
-void MemAdapterClose(void) __attribute__ ((alias ("ve_alloc_close")));
-void *MemAdapterPalloc(int nSize) __attribute__ ((alias ("ve_alloc_alloc")));
-void MemAdapterPfree(void *pMem) __attribute__ ((alias ("ve_alloc_free")));
-void *MemAdapterGetPhysicAddress(void *pVirtualAddress) __attribute__ ((alias ("ve_alloc_vir2phy")));
-void *MemAdapterGetVirtualAddress(void *pPhysicAddress) __attribute__ ((alias ("ve_alloc_phy2vir")));
-void MemAdapterFlushCache(void *pMem, int nSize) __attribute__ ((alias ("ve_flush_cache")));
+EXPORT int MemAdapterOpen(void) __attribute__ ((alias ("ve_alloc_open")));
+EXPORT void MemAdapterClose(void) __attribute__ ((alias ("ve_alloc_close")));
+EXPORT void *MemAdapterPalloc(int nSize) __attribute__ ((alias ("ve_alloc_alloc")));
+EXPORT void MemAdapterPfree(void *pMem) __attribute__ ((alias ("ve_alloc_free")));
+EXPORT void *MemAdapterGetPhysicAddress(void *pVirtualAddress) __attribute__ ((alias ("ve_alloc_vir2phy")));
+EXPORT void *MemAdapterGetVirtualAddress(void *pPhysicAddress) __attribute__ ((alias ("ve_alloc_phy2vir")));
+EXPORT void MemAdapterFlushCache(void *pMem, int nSize) __attribute__ ((alias ("ve_flush_cache")));
 
 #endif

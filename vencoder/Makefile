@@ -1,7 +1,7 @@
 CC = gcc
-CPPFLAGS = -Iinclude -I../common/include
+CPPFLAGS = -Iinclude -I../common/include -I../util
 DEP_CFLAGS = -MD -MP -MQ $@
-CFLAGS = -pthread -Wall -O3 -fPIC
+CFLAGS = -pthread -Wall -O3 -fpic -fvisibility=hidden -fomit-frame-pointer
 LDFLAGS = -shared -Wl,-soname,$(BINS)
 LOADLIBES = -L../base -L../common
 LDLIBS = -lcedar_base -lcedar_common

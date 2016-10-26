@@ -18,13 +18,14 @@
 
 #include "BitstreamManager.h"
 #include "EncAdapter.h"
+#include "export.h"
 
 #define BITSTREAM_FRAME_FIFO_SIZE 256
 
 #define ALIGN_32B(x) (((x) + (31)) & ~(31))
 #define ALIGN_64B(x) (((x) + (63)) & ~(63))
 
-BitStreamManager *BitStreamCreate(int nBufferSize) {
+EXPORT BitStreamManager *BitStreamCreate(int nBufferSize) {
 	BitStreamManager *handle;
 	char *buffer;
 
@@ -60,7 +61,7 @@ BitStreamManager *BitStreamCreate(int nBufferSize) {
 	return handle;
 }
 
-void BitStreamDestroy(BitStreamManager* handle) {
+EXPORT void BitStreamDestroy(BitStreamManager* handle) {
 	if (handle) {
 		pthread_mutex_destroy(&handle->mutex);
 		if (handle->pStreamBuffer) {
@@ -75,49 +76,49 @@ void BitStreamDestroy(BitStreamManager* handle) {
 	}
 }
 
-void *BitStreamBaseAddress(BitStreamManager* handle) {
+EXPORT void *BitStreamBaseAddress(BitStreamManager* handle) {
 	if (!handle)
 		return NULL;
 	return (void *)handle->pStreamBuffer;
 }
 
-void *BitStreamBasePhyAddress(BitStreamManager* handle) {
+EXPORT void *BitStreamBasePhyAddress(BitStreamManager* handle) {
 	if (!handle)
 		return NULL;
 	return (void *)handle->pStreamBufferPhyAddr;
 }
 
-void *BitStreamEndPhyAddress(BitStreamManager* handle) {
+EXPORT void *BitStreamEndPhyAddress(BitStreamManager* handle) {
 	if (!handle)
 		return NULL;
 	return (void *)handle->pStreamBufferPhyAddrEnd;
 }
 
-int BitStreamBufferSize(BitStreamManager* handle) {
+EXPORT int BitStreamBufferSize(BitStreamManager* handle) {
 	if (!handle)
 		return 0;
 	return handle->nStreamBufferSize;
 }
 
-int BitStreamFreeBufferSize(BitStreamManager* handle) {
+EXPORT int BitStreamFreeBufferSize(BitStreamManager* handle) {
 	if (!handle)
 		return 0;
 	return (handle->nStreamBufferSize - handle->nValidDataSize);
 }
 
-int BitStreamFrameNum(BitStreamManager* handle) {
+EXPORT int BitStreamFrameNum(BitStreamManager* handle) {
 	if (!handle)
 		return -1;
 	return handle->nBSListQ.nValidFrameNum;
 }
 
-int BitStreamWriteOffset(BitStreamManager* handle) {
+EXPORT int BitStreamWriteOffset(BitStreamManager* handle) {
 	if (!handle)
 		return -1;
 	return handle->nWriteOffset;
 }
 
-int BitStreamAddOneBitstream(BitStreamManager* handle, StreamInfo* pStreamInfo) {
+EXPORT int BitStreamAddOneBitstream(BitStreamManager* handle, StreamInfo* pStreamInfo) {
 	int nWritePos, NewWriteOffset;
 
 	if (!handle || !pStreamInfo)
@@ -150,7 +151,7 @@ int BitStreamAddOneBitstream(BitStreamManager* handle, StreamInfo* pStreamInfo) 
 	return 0;
 }
 
-StreamInfo *BitStreamGetOneBitstream(BitStreamManager *handle) {
+EXPORT StreamInfo *BitStreamGetOneBitstream(BitStreamManager *handle) {
 	StreamInfo *pStreamInfo;
 
 	if (!handle)
@@ -174,7 +175,7 @@ StreamInfo *BitStreamGetOneBitstream(BitStreamManager *handle) {
 	return pStreamInfo;
 }
 
-int BitStreamReturnOneBitstream(BitStreamManager* handle, StreamInfo* pStreamInfo) {
+EXPORT int BitStreamReturnOneBitstream(BitStreamManager* handle, StreamInfo* pStreamInfo) {
 	int stream_size;
 
 	if (!handle || !pStreamInfo)

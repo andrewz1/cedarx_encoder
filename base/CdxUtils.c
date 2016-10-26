@@ -16,7 +16,9 @@
  * GNU Lesser General Public License for more details.
  */
 
-void CdxBTDump(void) {
+#include "export.h"
+
+EXPORT void CdxBTDump(void) {
 /* empty func */
 	return;
 }

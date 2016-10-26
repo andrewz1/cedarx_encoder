@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -O3 -fPIC -pthread
+CFLAGS = -pthread -Wall -O3
 CPPFLAGS = -I../vencoder/include
 
 LDFLAGS =

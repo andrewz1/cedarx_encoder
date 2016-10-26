@@ -32,6 +32,7 @@
 
 #include "cedardev_api.h"
 #include "ve_types.h"
+#include "export.h"
 
 #define VE_MODE_SELECT		0x00
 #define VE_RESET			0x04
@@ -47,7 +48,7 @@ static pthread_mutex_t gVeDecoderMutex = PTHREAD_MUTEX_INITIALIZER;
 void VeReset(void);
 int VeGetDramType(void);
 
-int VeInitialize(void) {
+EXPORT int VeInitialize(void) {
 	int ret, rv = -1;
 
 	pthread_mutex_lock(&gVeMutex);
@@ -90,7 +91,7 @@ err0:
 	return rv;
 }
 
-void VeRelease(void) {
+EXPORT void VeRelease(void) {
 	pthread_mutex_lock(&gVeMutex);
 	if (gVeRefCount <= 0)
 		goto err0;
@@ -108,18 +109,18 @@ err0:
 	return;
 }
 
-int VeLock(void) {
+EXPORT int VeLock(void) {
 	return pthread_mutex_lock(&gVeDecoderMutex);
 }
 
-void VeUnLock(void) {
+EXPORT void VeUnLock(void) {
 	pthread_mutex_unlock(&gVeDecoderMutex);
 }
 
-int VeEncoderLock(void) __attribute__ ((alias("VeLock")));
-void VeEncoderUnLock(void) __attribute__ ((alias("VeUnLock")));
+EXPORT int VeEncoderLock(void) __attribute__ ((alias("VeLock")));
+EXPORT void VeEncoderUnLock(void) __attribute__ ((alias("VeUnLock")));
 
-void VeSetDramType(void) {
+EXPORT void VeSetDramType(void) {
 	volatile vetop_reg_mode_sel_t* pVeModeSelect;
 
 	pthread_mutex_lock(&gVeRegisterMutex);
@@ -147,28 +148,28 @@ void VeSetDramType(void) {
 	pthread_mutex_unlock(&gVeRegisterMutex);
 }
 
-void VeReset(void) {
+EXPORT void VeReset(void) {
 	ioctl(gVeDriverFd, IOCTL_RESET_VE, 0);
 	VeSetDramType();
 }
 
-int VeWaitInterrupt(void) {
+EXPORT int VeWaitInterrupt(void) {
 	if (ioctl(gVeDriverFd, IOCTL_WAIT_VE_DE, 1) <= 0)
 		return -1;  //* wait ve interrupt fail.
 	return 0;
 }
 
-int VeWaitEncoderInterrupt(void) {
+EXPORT int VeWaitEncoderInterrupt(void) {
 	if (ioctl(gVeDriverFd, IOCTL_WAIT_VE_EN, 1) <= 0)
 		return -1;  //* wait ve interrupt fail.
 	return 0;
 }
 
-void *VeGetRegisterBaseAddress(void) {
+EXPORT void *VeGetRegisterBaseAddress(void) {
 	return (void*)gVeEnvironmentInfo.address_macc;
 }
 
-unsigned int VeGetIcVersion(void) {
+EXPORT unsigned int VeGetIcVersion(void) {
 	volatile unsigned int value;
 
 	if (gVeRefCount > 0) {
@@ -178,7 +179,7 @@ unsigned int VeGetIcVersion(void) {
 	return 0;
 }
 
-int VeGetDramType(void) {
+EXPORT int VeGetDramType(void) {
 	//* can we know memory type by some system api?
 #if CONFIG_DRAM_INTERFACE == OPTION_DRAM_INTERFACE_DDR1_16BITS
 	return DDRTYPE_DDR1_16BITS;
@@ -199,11 +200,11 @@ int VeGetDramType(void) {
 #endif
 }
 
-int VeSetSpeed(int nSpeedMHz) {
+EXPORT int VeSetSpeed(int nSpeedMHz) {
 	return ioctl(gVeDriverFd, IOCTL_SET_VE_FREQ, nSpeedMHz);
 }
 
-void VeEnableEncoder(void) {
+EXPORT void VeEnableEncoder(void) {
 	volatile vetop_reg_mode_sel_t* pVeModeSelect;
 
 	pthread_mutex_lock(&gVeRegisterMutex);
@@ -214,7 +215,7 @@ void VeEnableEncoder(void) {
 	pthread_mutex_unlock(&gVeRegisterMutex);
 }
 
-void VeDisableEncoder(void) {
+EXPORT void VeDisableEncoder(void) {
 	volatile vetop_reg_mode_sel_t* pVeModeSelect;
 
 	pthread_mutex_lock(&gVeRegisterMutex);
@@ -225,7 +226,7 @@ void VeDisableEncoder(void) {
 	pthread_mutex_unlock(&gVeRegisterMutex);
 }
 
-void VeEnableDecoder(enum VeRegionE region) {
+EXPORT void VeEnableDecoder(enum VeRegionE region) {
 	volatile vetop_reg_mode_sel_t* pVeModeSelect;
 
 	pthread_mutex_lock(&gVeRegisterMutex);
@@ -247,7 +248,7 @@ void VeEnableDecoder(enum VeRegionE region) {
 	pthread_mutex_unlock(&gVeRegisterMutex);
 }
 
-void VeDisableDecoder(void) {
+EXPORT void VeDisableDecoder(void) {
 	volatile vetop_reg_mode_sel_t* pVeModeSelect;
 
 	pthread_mutex_lock(&gVeRegisterMutex);
@@ -256,7 +257,7 @@ void VeDisableDecoder(void) {
 	pthread_mutex_unlock(&gVeRegisterMutex);
 }
 
-void VeDecoderWidthMode(int nWidth) {
+EXPORT void VeDecoderWidthMode(int nWidth) {
 	volatile vetop_reg_mode_sel_t* pVeModeSelect;
 
 	pthread_mutex_lock(&gVeRegisterMutex);
@@ -268,13 +269,13 @@ void VeDecoderWidthMode(int nWidth) {
 	pthread_mutex_unlock(&gVeRegisterMutex);
 }
 
-void VeResetDecoder(void) __attribute__ ((alias("VeReset")));
-void VeResetEncoder(void) __attribute__ ((alias("VeReset")));
+EXPORT void VeResetDecoder(void) __attribute__ ((alias("VeReset")));
+EXPORT void VeResetEncoder(void) __attribute__ ((alias("VeReset")));
 
-void VeInitEncoderPerformance(int nMode) { //* 0: normal performance; 1. high performance
+EXPORT void VeInitEncoderPerformance(int nMode) { //* 0: normal performance; 1. high performance
 	return;
 }
 
-void VeUninitEncoderPerformance(int nMode) { //* 0: normal performance; 1. high performance
+EXPORT void VeUninitEncoderPerformance(int nMode) { //* 0: normal performance; 1. high performance
 	return;
 }

@@ -18,8 +18,9 @@
 
 #include "ve.h"
 #include "memoryAdapter.h"
+#include "export.h"
 
-int EncAdapterInitialize(void) {
+EXPORT int EncAdapterInitialize(void) {
 	if (VeInitialize() < 0)
 		return -1;
 	if (MemAdapterOpen() < 0) {
@@ -29,96 +30,95 @@ int EncAdapterInitialize(void) {
 	return 0;
 }
 
-void EncAdpaterRelease(void) {
+EXPORT void EncAdpaterRelease(void) {
 	MemAdapterClose();
 	VeRelease();
 }
 
-int EncAdapterLockVideoEngine(void) {
+EXPORT int EncAdapterLockVideoEngine(void) {
 	return VeEncoderLock();
 }
 
-void EncAdapterUnLockVideoEngine(void) {
+EXPORT void EncAdapterUnLockVideoEngine(void) {
 	VeEncoderUnLock();
 }
 
-void EncAdapterVeReset(void) {
+EXPORT void EncAdapterVeReset(void) {
 	VeReset();
 }
 
-int EncAdapterVeWaitInterrupt(void) {
+EXPORT int EncAdapterVeWaitInterrupt(void) {
 	return VeWaitEncoderInterrupt();
 }
 
-void *EncAdapterVeGetBaseAddress(void) {
+EXPORT void *EncAdapterVeGetBaseAddress(void) {
 	return VeGetRegisterBaseAddress();
 }
 
-int EncAdapterMemGetDramType(void) {
+EXPORT int EncAdapterMemGetDramType(void) {
 	return VeGetDramType();
 }
 
-void *EncAdapterMemPalloc(int nSize) {
+EXPORT void *EncAdapterMemPalloc(int nSize) {
 	return MemAdapterPalloc(nSize);
 }
 
-void EncAdapterMemPfree(void *pMem) {
+EXPORT void EncAdapterMemPfree(void *pMem) {
 	MemAdapterPfree(pMem);
 }
 
-void EncAdapterMemFlushCache(void *pMem, int nSize) {
+EXPORT void EncAdapterMemFlushCache(void *pMem, int nSize) {
 	MemAdapterFlushCache(pMem, nSize);
 }
 
-void *EncAdapterMemGetPhysicAddress(void *pVirtualAddress) {
+EXPORT void *EncAdapterMemGetPhysicAddress(void *pVirtualAddress) {
 	return MemAdapterGetPhysicAddress(pVirtualAddress);
 }
 
-void *EncAdapterMemGetVirtualAddress(void *pPhysicAddress) {
+EXPORT void *EncAdapterMemGetVirtualAddress(void *pPhysicAddress) {
 	return MemAdapterGetVirtualAddress(pPhysicAddress);
 }
 
 /* encoder functions */
 
-void EncAdapterEnableEncoder(void) {
+EXPORT void EncAdapterEnableEncoder(void) {
 	VeEnableEncoder();
 }
 
-void EncAdapterDisableEncoder(void) {
+EXPORT void EncAdapterDisableEncoder(void) {
 	VeDisableEncoder();
 }
 
-void EncAdapterResetEncoder(void) {
+EXPORT void EncAdapterResetEncoder(void) {
 	VeResetEncoder();
 }
 
-void EncAdapterInitPerformance(int nMode) {
+EXPORT void EncAdapterInitPerformance(int nMode) {
 	VeInitEncoderPerformance(nMode);
 }
 
-void EncAdapterUninitPerformance(int nMode) {
+EXPORT void EncAdapterUninitPerformance(int nMode) {
 	VeUninitEncoderPerformance(nMode);
 }
 
-unsigned int EncAdapterGetICVersion(void) {
+EXPORT unsigned int EncAdapterGetICVersion(void) {
 	return VeGetIcVersion();
 }
 
-void EncAdapterSetDramType(void) {
+EXPORT void EncAdapterSetDramType(void) {
 	VeSetDramType();
 }
 
 /* debug functions */
 
-void EncAdapterPrintTopVEReg(void) {
+EXPORT void EncAdapterPrintTopVEReg(void) {
 	return;
 }
 
-void EncAdapterPrintEncReg(void) {
+EXPORT void EncAdapterPrintEncReg(void) {
 	return;
 }
 
-
-void EncAdapterPrintIspReg(void) {
+EXPORT void EncAdapterPrintIspReg(void) {
 	return;
 }

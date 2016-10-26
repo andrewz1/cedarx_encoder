@@ -19,6 +19,7 @@
 #include "FrameBufferManager.h"
 #include "EncAdapter.h"
 #include "venc_device.h"
+#include "export.h"
 
 #define FRAME_BUFFER_NUM 4
 
@@ -35,7 +36,7 @@ typedef struct VencContext {
 	int bInit;
 } VencContext;
 
-VideoEncoder* VideoEncCreate(VENC_CODEC_TYPE eCodecType) {
+EXPORT VideoEncoder* VideoEncCreate(VENC_CODEC_TYPE eCodecType) {
 	VencContext* venc_ctx;
 
 	if (EncAdapterInitialize())
@@ -65,7 +66,7 @@ VideoEncoder* VideoEncCreate(VENC_CODEC_TYPE eCodecType) {
 	return (VideoEncoder*)venc_ctx;
 }
 
-void VideoEncDestroy(VideoEncoder *pEncoder) {
+EXPORT void VideoEncDestroy(VideoEncoder *pEncoder) {
 	VencContext *venc_ctx = (VencContext *)pEncoder;
 
 	if (!pEncoder)
@@ -81,7 +82,7 @@ void VideoEncDestroy(VideoEncoder *pEncoder) {
 	free(venc_ctx);
 }
 
-int VideoEncInit(VideoEncoder *pEncoder, VencBaseConfig *pConfig) {
+EXPORT int VideoEncInit(VideoEncoder *pEncoder, VencBaseConfig *pConfig) {
 	VencContext *venc_ctx = (VencContext *)pEncoder;
 	int result = 0;
 
@@ -104,7 +105,7 @@ int VideoEncInit(VideoEncoder *pEncoder, VencBaseConfig *pConfig) {
 	return result;
 }
 
-int VideoEncUnInit(VideoEncoder *pEncoder) {
+EXPORT int VideoEncUnInit(VideoEncoder *pEncoder) {
 	VencContext *venc_ctx = (VencContext *)pEncoder;
 
 	if (!pEncoder || !venc_ctx->bInit)
@@ -124,7 +125,7 @@ int VideoEncUnInit(VideoEncoder *pEncoder) {
 	return 0;
 }
 
-int AllocInputBuffer(VideoEncoder *pEncoder, VencAllocateBufferParam *pBufferParam) {
+EXPORT int AllocInputBuffer(VideoEncoder *pEncoder, VencAllocateBufferParam *pBufferParam) {
 	VencContext *venc_ctx = (VencContext *)pEncoder;
 
 	if (!pEncoder || !pBufferParam || !venc_ctx->pFBM)
@@ -132,7 +133,7 @@ int AllocInputBuffer(VideoEncoder *pEncoder, VencAllocateBufferParam *pBufferPar
 	return AllocateInputBuffer(venc_ctx->pFBM, pBufferParam);
 }
 
-int GetOneAllocInputBuffer(VideoEncoder* pEncoder, VencInputBuffer* pInputbuffer) {
+EXPORT int GetOneAllocInputBuffer(VideoEncoder* pEncoder, VencInputBuffer* pInputbuffer) {
 	VencContext *venc_ctx = (VencContext *)pEncoder;
 
 	if (!pEncoder || !pInputbuffer || !venc_ctx->pFBM)
@@ -140,7 +141,7 @@ int GetOneAllocInputBuffer(VideoEncoder* pEncoder, VencInputBuffer* pInputbuffer
 	return GetOneAllocateInputBuffer(venc_ctx->pFBM, pInputbuffer);
 }
 
-int FlushCacheAllocInputBuffer(VideoEncoder* pEncoder, VencInputBuffer *pInputbuffer) {
+EXPORT int FlushCacheAllocInputBuffer(VideoEncoder* pEncoder, VencInputBuffer *pInputbuffer) {
 	VencContext *venc_ctx = (VencContext *)pEncoder;
 
 	if (!pEncoder || !pInputbuffer || !venc_ctx->pFBM)
@@ -149,7 +150,7 @@ int FlushCacheAllocInputBuffer(VideoEncoder* pEncoder, VencInputBuffer *pInputbu
 	return 0;
 }
 
-int ReturnOneAllocInputBuffer(VideoEncoder* pEncoder, VencInputBuffer *pInputbuffer) {
+EXPORT int ReturnOneAllocInputBuffer(VideoEncoder* pEncoder, VencInputBuffer *pInputbuffer) {
 	VencContext* venc_ctx = (VencContext*) pEncoder;
 
 	if (!pEncoder || !pInputbuffer || !venc_ctx->pFBM)
@@ -157,13 +158,13 @@ int ReturnOneAllocInputBuffer(VideoEncoder* pEncoder, VencInputBuffer *pInputbuf
 	return ReturnOneAllocateInputBuffer(venc_ctx->pFBM, pInputbuffer);
 }
 
-int ReleaseAllocInputBuffer(VideoEncoder* pEncoder) {
+EXPORT int ReleaseAllocInputBuffer(VideoEncoder* pEncoder) {
 	if (!pEncoder)
 		return -1;
 	return 0;
 }
 
-int AddOneInputBuffer(VideoEncoder* pEncoder, VencInputBuffer* pBuffer) {
+EXPORT int AddOneInputBuffer(VideoEncoder* pEncoder, VencInputBuffer* pBuffer) {
 	VencContext* venc_ctx = (VencContext*) pEncoder;
 
 	if (!pEncoder || !pBuffer || !venc_ctx->pFBM)
@@ -171,7 +172,7 @@ int AddOneInputBuffer(VideoEncoder* pEncoder, VencInputBuffer* pBuffer) {
 	return AddInputBuffer(venc_ctx->pFBM, pBuffer);
 }
 
-int VideoEncodeOneFrame(VideoEncoder* pEncoder) {
+EXPORT int VideoEncodeOneFrame(VideoEncoder* pEncoder) {
 	VencContext* venc_ctx = (VencContext*)pEncoder;
 	unsigned long offt;
 	int result;
@@ -195,7 +196,7 @@ int VideoEncodeOneFrame(VideoEncoder* pEncoder) {
 	return result;
 }
 
-int AlreadyUsedInputBuffer(VideoEncoder *pEncoder, VencInputBuffer *pBuffer) {
+EXPORT int AlreadyUsedInputBuffer(VideoEncoder *pEncoder, VencInputBuffer *pBuffer) {
 	VencContext *venc_ctx = (VencContext *)pEncoder;
 
 	if (!pEncoder || !pBuffer || !venc_ctx->pFBM)
@@ -203,7 +204,7 @@ int AlreadyUsedInputBuffer(VideoEncoder *pEncoder, VencInputBuffer *pBuffer) {
 	return GetUsedInputBuffer(venc_ctx->pFBM, pBuffer);
 }
 
-int ValidBitstreamFrameNum(VideoEncoder *pEncoder) {
+EXPORT int ValidBitstreamFrameNum(VideoEncoder *pEncoder) {
 	VencContext *venc_ctx = (VencContext *)pEncoder;
 
 	if (!pEncoder)
@@ -211,7 +212,7 @@ int ValidBitstreamFrameNum(VideoEncoder *pEncoder) {
 	return venc_ctx->pVEncDevice->ValidBitStreamFrameNum(venc_ctx->pEncoderHandle);
 }
 
-int GetOneBitstreamFrame(VideoEncoder *pEncoder, VencOutputBuffer *pBuffer) {
+EXPORT int GetOneBitstreamFrame(VideoEncoder *pEncoder, VencOutputBuffer *pBuffer) {
 	VencContext *venc_ctx = (VencContext *)pEncoder;
 
 	if (!pEncoder || !pBuffer)
@@ -219,7 +220,7 @@ int GetOneBitstreamFrame(VideoEncoder *pEncoder, VencOutputBuffer *pBuffer) {
 	return venc_ctx->pVEncDevice->GetOneBitStreamFrame(venc_ctx->pEncoderHandle, pBuffer);
 }
 
-int FreeOneBitStreamFrame(VideoEncoder *pEncoder, VencOutputBuffer *pBuffer) {
+EXPORT int FreeOneBitStreamFrame(VideoEncoder *pEncoder, VencOutputBuffer *pBuffer) {
 	VencContext *venc_ctx = (VencContext *)pEncoder;
 
 	if (!pEncoder || !pBuffer)
@@ -227,7 +228,7 @@ int FreeOneBitStreamFrame(VideoEncoder *pEncoder, VencOutputBuffer *pBuffer) {
 	return venc_ctx->pVEncDevice->FreeOneBitStreamFrame(venc_ctx->pEncoderHandle, pBuffer);
 }
 
-int VideoEncGetParameter(VideoEncoder *pEncoder, VENC_INDEXTYPE indexType, void *paramData) {
+EXPORT int VideoEncGetParameter(VideoEncoder *pEncoder, VENC_INDEXTYPE indexType, void *paramData) {
 	VencContext *venc_ctx = (VencContext *)pEncoder;
 
 	if (!pEncoder)
@@ -235,7 +236,7 @@ int VideoEncGetParameter(VideoEncoder *pEncoder, VENC_INDEXTYPE indexType, void 
 	return venc_ctx->pVEncDevice->GetParameter(venc_ctx->pEncoderHandle, indexType, paramData);
 }
 
-int VideoEncSetParameter(VideoEncoder *pEncoder, VENC_INDEXTYPE indexType, void *paramData) {
+EXPORT int VideoEncSetParameter(VideoEncoder *pEncoder, VENC_INDEXTYPE indexType, void *paramData) {
 	VencContext *venc_ctx = (VencContext *)pEncoder;
 
 	if (!pEncoder)
@@ -243,7 +244,7 @@ int VideoEncSetParameter(VideoEncoder *pEncoder, VENC_INDEXTYPE indexType, void 
 	return venc_ctx->pVEncDevice->SetParameter(venc_ctx->pEncoderHandle, indexType, paramData);
 }
 
-int AWJpecEnc(JpegEncInfo *pJpegInfo, EXIFInfo *pExifInfo, void *pOutBuffer, int *pOutBufferSize) {
+EXPORT int AWJpecEnc(JpegEncInfo *pJpegInfo, EXIFInfo *pExifInfo, void *pOutBuffer, int *pOutBufferSize) {
 	VencAllocateBufferParam bufferParam;
 	VideoEncoder *pVideoEnc;
 	VencInputBuffer inputBuffer;
